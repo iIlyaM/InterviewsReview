@@ -8,7 +8,7 @@ from record.record_router import record_router
 from . import schemas
 from . import services
 from . import validator
-from ..auth.jwt import get_current_user
+from auth.jwt import get_current_user
 
 router = APIRouter(
     tags=['Users']

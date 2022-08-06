@@ -1,4 +1,6 @@
-from pydantic import BaseModel, constr, EmailStr
+from typing import Optional
+
+from pydantic import BaseModel, constr, EmailStr, validator
 from enum import Enum
 
 
@@ -8,17 +10,21 @@ class Role(str, Enum):
     hr = "hr"
 
 
-class User(BaseModel):
+class BaseUser(BaseModel):
     name: constr(min_length=2, max_length=50)
     email: EmailStr
     password: str
-    role: Role
 
 
-class SuperUser(BaseModel):
-    name: constr(min_length=2, max_length=50)
-    email: EmailStr
-    password: str
+class Applicant(BaseUser):
+    role: Role = Role.applicant
+
+    @validator('role')
+    def set_role(cls, role):
+        return Role.applicant
+
+
+class SuperUser(BaseUser):
     role: Role = Role.admin
 
 

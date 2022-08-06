@@ -5,7 +5,12 @@ from .models import *
 from core.utils import add_entity
 
 
-async def create_user_record(received_id: int, request, database):
+async def create_user_record(
+        received_id: int,
+        received_company_name: str,
+        received_title: str,
+        request, database
+):
     record = Record(
         rating=request.record.rating,
         specialization=request.record.specialization,
@@ -17,11 +22,19 @@ async def create_user_record(received_id: int, request, database):
 
     user_record = UserRecord(
         user_id=received_id,
-        company_name=request.company_name,
+        company_name=received_company_name,
         record_id=rec_id,
-        record_title=request.record_title,
+        record_title=received_title,
     )
     add_entity(database, user_record)
+
+
+async def get_record_by_title(title: str, database):
+    return database.query(UserRecord).filter(UserRecord.record_title == title).first()
+
+
+async def get_records_by_com_name(company_name: str, database):
+    return database.query(UserRecord).filter(UserRecord.company_name == company_name).all()
 
 
 async def get_records(database) -> List[UserRecord]:

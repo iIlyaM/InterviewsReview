@@ -7,7 +7,7 @@ class Record(Base):
     __tablename__ = "record"
 
     record_id = Column(Integer, primary_key=True, index=True, unique=True)
-    rating = Column(Float())  # points(рейтинг)
+    rating = Column(Float)  # points(рейтинг)
     specialization = Column(String(100))
     review = Column(Text)
 

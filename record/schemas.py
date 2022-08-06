@@ -21,9 +21,14 @@ class RecordModel(RatingValidatorModel):
 
 
 class UserRecordModel(BaseModel):
-    company_name: str
-    record_title: str
+    # company_name: str
+    # record_title: str
     record: RecordModel
 
     class Config:
         orm_mode = True
+
+
+class DisplayUserRecordModel(UserRecordModel):
+    company_name: str
+    record_title: str

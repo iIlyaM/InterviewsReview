@@ -1,7 +1,9 @@
 from typing import List
 
+from sqlalchemy.sql import func
+from reviews_app.models import Company, User
 from .models import *
-# from .schemas import *
+from .schemas import *
 from core.utils import add_entity
 
 
@@ -12,12 +14,12 @@ async def create_user_record(
         request, database
 ):
     record = Record(
-        rating=request.record.rating,
-        specialization=request.record.specialization,
-        review=request.record.review
+        rating=request.rating,
+        specialization=request.specialization,
+        review=request.review
     )
+    record.company_name = received_company_name
     add_entity(database, record)
-
     rec_id = database.query(Record).order_by(Record.record_id.desc()).first().record_id
 
     user_record = UserRecord(
@@ -27,6 +29,7 @@ async def create_user_record(
         record_title=received_title,
     )
     add_entity(database, user_record)
+    __update_company_rating(received_company_name, database)
 
 
 async def get_record_by_title(title: str, database):
@@ -40,3 +43,45 @@ async def get_records_by_com_name(company_name: str, database):
 async def get_records(database) -> List[UserRecord]:
     users_records = database.query(UserRecord).all()
     return users_records
+
+
+async def update(received_name: str, received_title: str, record: RecordModel, database):
+    user_id = database.query(User).filter(User.user_name == received_name).first().user_id
+    new_user_record = database\
+        .query(UserRecord)\
+        .filter(UserRecord.user_id == user_id)\
+        .filter(UserRecord.record_title == received_title)\
+        .first()
+
+    updated_record = database\
+        .query(Record)\
+        .filter(Record.record_id == new_user_record.record_id)\
+        .filter(Record.company_name == new_user_record.company_name)\
+        .first()
+
+    updated_record.rating = record.rating
+    updated_record.specialization = record.specialization
+    updated_record.review = record.review
+
+    database.commit()
+
+# async def remove_record(received_company_name: str, received_title: str, database):
+#     user_records = database.query(UserRecord) \
+#         .filter(UserRecord.company_name == received_company_name) \
+#         .filter(UserRecord.record_title == received_title) \
+#         .first()
+#
+#     users_rec_id = user_records.record_id
+#     database.delete(user_records)
+#     database.query(Record).filter(Record.record_id == users_rec_id).delete()
+#     database.commit()
+
+def __update_company_rating(company_name: str, database):
+    new_rating = database \
+        .query(func.avg(Record.rating).label('average')) \
+        .filter(Record.company_name == company_name)
+
+    database.query(Company)\
+        .filter(Company.company_name == company_name)\
+        .update({Company.rating: new_rating})
+    database.commit()

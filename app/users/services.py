@@ -1,9 +1,9 @@
 from . import models
-from reviews_app.models import User, AdminUser, HRUser
+from app.reviews_app.models import User, AdminUser, HRUser
 from .models import UserAuth
 from .schemas import Role
 from typing import List
-from core.utils import add_entity
+from app.core.utils import add_entity
 
 
 async def new_user_register(request, database, role: Role) -> models.UserAuth:

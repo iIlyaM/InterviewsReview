@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from record.schemas import RatingValidatorModel
+from app.record.schemas import RatingValidatorModel
 
 
 class UserAuthModel(BaseModel):

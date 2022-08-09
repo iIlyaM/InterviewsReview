@@ -1,10 +1,10 @@
 from typing import List
 
 from sqlalchemy.sql import func
-from reviews_app.models import Company, User
+from app.reviews_app.models import Company, User
 from .models import *
 from .schemas import *
-from core.utils import add_entity
+from app.core.utils import add_entity
 
 
 async def create_user_record(
@@ -48,16 +48,16 @@ async def get_records(database) -> List[UserRecord]:
 
 async def update(received_name: str, received_title: str, record: RecordModel, database):
     user_id = database.query(User).filter(User.user_name == received_name).first().user_id
-    new_user_record = database\
-        .query(UserRecord)\
-        .filter(UserRecord.user_id == user_id)\
-        .filter(UserRecord.record_title == received_title)\
+    new_user_record = database \
+        .query(UserRecord) \
+        .filter(UserRecord.user_id == user_id) \
+        .filter(UserRecord.record_title == received_title) \
         .first()
 
-    updated_record = database\
-        .query(Record)\
-        .filter(Record.record_id == new_user_record.record_id)\
-        .filter(Record.company_name == new_user_record.company_name)\
+    updated_record = database \
+        .query(Record) \
+        .filter(Record.record_id == new_user_record.record_id) \
+        .filter(Record.company_name == new_user_record.company_name) \
         .first()
 
     updated_record.rating = record.rating
@@ -66,7 +66,6 @@ async def update(received_name: str, received_title: str, record: RecordModel, d
 
     database.commit()
     __update_company_rating(updated_record.company_name, database)
-
 
 
 # async def remove_record(received_company_name: str, received_title: str, database):
@@ -86,7 +85,7 @@ def __update_company_rating(company_name: str, database):
         .query(func.avg(Record.rating).label('average')) \
         .filter(Record.company_name == company_name)
 
-    database.query(Company)\
-        .filter(Company.company_name == company_name)\
+    database.query(Company) \
+        .filter(Company.company_name == company_name) \
         .update({Company.rating: new_rating})
     database.commit()

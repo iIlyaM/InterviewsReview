@@ -2,9 +2,9 @@ import uvicorn
 from fastapi import FastAPI
 from starlette.requests import Request
 from starlette.responses import Response
-from routes import routes
+from app.routes import routes
 
-from core.database import SessionLocal
+from app.core.database import SessionLocal
 
 app = FastAPI(title="InterviewsReviewApp")
 

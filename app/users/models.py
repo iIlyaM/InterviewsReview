@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Integer, Enum
 from sqlalchemy.orm import relationship
-from core.database import Base
-from core.security import verify_password, get_password_hash
+from app.core.database import Base
+from app.core.security import verify_password, get_password_hash
 from .schemas import Role
 
 

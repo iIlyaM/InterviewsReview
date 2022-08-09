@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, status, Response
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from core.utils import get_db
+from app.core.utils import get_db
 
 from . import schemas
 from .services import *

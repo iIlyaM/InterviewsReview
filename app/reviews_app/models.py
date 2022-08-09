@@ -1,8 +1,8 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
-from core.database import Base
-from users.models import UserAuth
-from record.models import *
+from app.core.database import Base
+from app.users.models import UserAuth
+from app.record.models import *
 
 
 class User(Base):

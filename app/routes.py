@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-from record import record_router
-from users import users_router
-from auth import router
+from app.record import record_router
+from app.users import users_router
+from app.auth import router
 
 routes = APIRouter()
 

@@ -11,7 +11,8 @@ async def create_user_record(
         received_id: int,
         received_company_name: str,
         received_title: str,
-        request, database
+        request,
+        database
 ):
     record = Record(
         rating=request.rating,
@@ -64,6 +65,9 @@ async def update(received_name: str, received_title: str, record: RecordModel, d
     updated_record.review = record.review
 
     database.commit()
+    __update_company_rating(updated_record.company_name, database)
+
+
 
 # async def remove_record(received_company_name: str, received_title: str, database):
 #     user_records = database.query(UserRecord) \
@@ -75,6 +79,7 @@ async def update(received_name: str, received_title: str, record: RecordModel, d
 #     database.delete(user_records)
 #     database.query(Record).filter(Record.record_id == users_rec_id).delete()
 #     database.commit()
+
 
 def __update_company_rating(company_name: str, database):
     new_rating = database \

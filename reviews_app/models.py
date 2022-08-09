@@ -10,6 +10,7 @@ class User(Base):
 
     user_id = Column(Integer, ForeignKey('user_auth.id', ondelete="CASCADE"), primary_key=True)
     user_name = Column(String(100), unique=True)
+
     user_auth = relationship("UserAuth", back_populates="user")
 
 
@@ -25,7 +26,7 @@ class AdminUser(Base):
 class HRUser(Base):
     __tablename__ = "hr_user"
 
-    hr_user_id = Column(Integer, ForeignKey('user_auth.id'), primary_key=True)
+    hr_user_id = Column(Integer, ForeignKey('user_auth.id', ondelete="CASCADE"), primary_key=True)
     hr_name = Column(String(100), unique=True)
     company_id = Column(Integer, ForeignKey('company.company_id'))
 

@@ -57,11 +57,13 @@ async def create_user_by_super_user(
     new_user = await services.new_user_register(request, database, role)
     return new_user
 
+# ,
+#     dependencies=[Depends(get_current_user)]
+
 
 @router.get(
     '/',
-    response_model=List[schemas.DisplayUser],
-    dependencies=[Depends(get_current_user)]
+    response_model=List[schemas.DisplayUser]
 )
 async def get_all_users(database: Session = Depends(get_db)):
     return await services.get_users(database)

@@ -76,6 +76,10 @@ def __get_role_by_email(user_email: str, database):
     return database.query(UserAuth).filter(UserAuth.email == user_email).first().role
 
 
+def __get_user_id_by_email(user_email: str, database):
+    return database.query(UserAuth).filter(UserAuth.email == user_email).first().id
+
+
 def check_user_access(user_email: str, database):
     role = __get_role_by_email(user_email, database)
     if role == Role.hr:
@@ -97,7 +101,7 @@ def check_admin_access(user_email: str, database):
 
 def check_hr_access(user_email: str, database):
     role = __get_role_by_email(user_email, database)
-    if role == Role.user:
+    if role == Role.applicant:
         raise HTTPException(
             status_code=403,
             detail="You must have the 'hr' or 'admin' role to use this method.",

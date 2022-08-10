@@ -30,3 +30,7 @@ class UserRecordModel(BaseModel):
 class DisplayUserRecordModel(UserRecordModel):
     company_name: str
     record_title: str
+
+
+class EmailRecordMode(RecordModel):
+    email: str

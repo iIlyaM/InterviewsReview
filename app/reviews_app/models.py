@@ -38,8 +38,7 @@ class Company(Base):
 
     company_id = Column(Integer, primary_key=True, index=True, unique=True)
     company_name = Column(String(200), unique=True)
-    rating = Column(Float)  # points(рейтинг)
-    # email_id = Column(Integer, ForeignKey('companies.id'))
+    rating = Column(Float)
 
     hr_users = relationship("HRUser")
 

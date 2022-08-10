@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Response
 from sqlalchemy.orm import Session
 
 from app.core.utils import get_db
@@ -19,6 +19,7 @@ async def add_user_record(
         request: schemas.RecordModel,
         database: Session = Depends(get_db)
 ):
+    await check_title(title, database)
     return await create_user_record(user_id, company_name, title, request, database)
 
 
@@ -43,14 +44,15 @@ async def update_record(
         title: str,
         record: schemas.RecordModel,
         database: Session = Depends(get_db)):
+    await check_title(title, database)
     return await update(username, title, record, database)
 
-# @record_router.delete(
-#     '/{company}/{author}/{title}/record',
-#     status_code=status.HTTP_204_NO_CONTENT,
-#     response_class=Response)
-# async def delete_record(
-#         company: str,
-#         title: str,
-#         database: Session = Depends(get_db)):
-#     return await remove_record(company, title, database)
+
+@record_router.delete(
+    '/record/{title}',
+    status_code=status.HTTP_204_NO_CONTENT,
+    response_class=Response)
+async def delete_record(
+        title: str,
+        database: Session = Depends(get_db)):
+    return await remove_record(title, database)

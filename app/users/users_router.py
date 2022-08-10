@@ -8,6 +8,7 @@ from . import schemas
 from . import services
 from . import validator
 from .schemas import Role
+from app.auth.jwt import get_current_user
 
 router = APIRouter(
     tags=['Users']
@@ -16,26 +17,14 @@ router = APIRouter(
 
 @router.post('/user', status_code=status.HTTP_201_CREATED)
 async def create_user_registration(request: schemas.Applicant, database: Session = Depends(get_db)):
-    user = await validator.verify_email_exist(request.email, database)
-    if user:
-        raise HTTPException(
-            status_code=400,
-            detail="The user with this email already exists in the system.",
-        )
-
+    await services.check_email_name_unique(request.email, request.name, database)
     new_user = await services.new_user_register(request, database, request.role)
     return new_user
 
 
 @router.post('/superuser', status_code=status.HTTP_201_CREATED)
 async def create_superuser(request: schemas.SuperUser, database: Session = Depends(get_db)):
-    user = await validator.verify_email_exist(request.email, database)
-    if user:
-        raise HTTPException(
-            status_code=400,
-            detail="The user with this email already exists in the system.",
-        )
-
+    await services.check_email_name_unique(request.email, request.name, database)
     new_user = await services.new_user_register(request, database, request.role)
     return new_user
 
@@ -46,13 +35,7 @@ async def create_user_by_super_user(
         request: schemas.BaseUser,
         database: Session = Depends(get_db)
 ):
-    user = await validator.verify_email_exist(request.email, database)
-    if user:
-        raise HTTPException(
-            status_code=400,
-            detail="The user with this email already exists in the system.",
-        )
-
+    await services.check_email_name_unique(request.email, request.name, database)
     new_user = await services.new_user_register(request, database, role)
     return new_user
 

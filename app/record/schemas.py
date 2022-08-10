@@ -21,8 +21,6 @@ class RecordModel(RatingValidatorModel):
 
 
 class UserRecordModel(BaseModel):
-    # company_name: str
-    # record_title: str
     record: RecordModel
 
     class Config:

@@ -1,9 +1,11 @@
 from typing import List
 
+from fastapi import HTTPException
 from sqlalchemy.sql import func
 from app.reviews_app.models import Company, User
 from .models import *
 from .schemas import *
+from .validator import verify_title_exist
 from app.core.utils import add_entity
 
 
@@ -68,16 +70,19 @@ async def update(received_name: str, received_title: str, record: RecordModel, d
     __update_company_rating(updated_record.company_name, database)
 
 
-# async def remove_record(received_company_name: str, received_title: str, database):
-#     user_records = database.query(UserRecord) \
-#         .filter(UserRecord.company_name == received_company_name) \
-#         .filter(UserRecord.record_title == received_title) \
-#         .first()
-#
-#     users_rec_id = user_records.record_id
-#     database.delete(user_records)
-#     database.query(Record).filter(Record.record_id == users_rec_id).delete()
-#     database.commit()
+async def remove_record(received_title: str, database):
+    record = database.query(UserRecord).filter(UserRecord.record_title == received_title).first().record_id
+    database.query(Record).filter(Record.record_id == record).delete()
+    database.commit()
+
+
+async def check_title(title: str, database):
+    record = await verify_title_exist(title, database)
+    if record:
+        raise HTTPException(
+            status_code=400,
+            detail="The user record with this title already exists in the system.",
+        )
 
 
 def __update_company_rating(company_name: str, database):

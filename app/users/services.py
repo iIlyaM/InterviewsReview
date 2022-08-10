@@ -4,6 +4,8 @@ from .models import UserAuth
 from .schemas import Role
 from typing import List
 from app.core.utils import add_entity
+from fastapi import HTTPException
+from .validator import verify_email_exist, verify_name_exist
 
 
 async def new_user_register(request, database, role: Role) -> models.UserAuth:
@@ -53,3 +55,51 @@ def __add_superuser(database, received_user):
 def __add_hr(database, received_user):
     superuser = HRUser(hr_user_id=received_user.id, hr_name=received_user.username)
     add_entity(database, superuser)
+
+
+async def check_email_name_unique(email: str, name: str, database):
+    user = await verify_email_exist(email, database)
+    if user:
+        raise HTTPException(
+            status_code=400,
+            detail="The user with this email already exists in the system.",
+        )
+    user = await verify_name_exist(name, database)
+    if user:
+        raise HTTPException(
+            status_code=400,
+            detail="The user with this name already exists in the system.",
+        )
+
+#
+# def __get_role_by_email(user_email: str, database):
+#     return database.query(UserAuth).filter(UserAuth.email == user_email).first().role
+#
+#
+# def check_user_access(user_email: str, database):
+#     role = __get_role_by_email(user_email, database)
+#     if role == Role.hr:
+#         raise HTTPException(
+#             status_code=403,
+#             detail="You must have the 'user' or 'admin' role to use this method.",
+#         )
+#
+#
+# def check_admin_access(user_email: str, database):
+#     role = __get_role_by_email(user_email, database)
+#
+#     if role != Role.admin:
+#         raise HTTPException(
+#             status_code=403,
+#             detail="You must have the 'admin' role to use this method.",
+#         )
+#
+#
+# def check_hr_access(user_email: str, database):
+#     role = __get_role_by_email(user_email, database)
+#     if role == Role.user:
+#         raise HTTPException(
+#             status_code=403,
+#             detail="You must have the 'hr' or 'admin' role to use this method.",
+#         )
+

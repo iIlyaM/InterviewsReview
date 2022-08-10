@@ -17,11 +17,6 @@ class Record(Base):
                                passive_deletes=True, )
     hr_record = relationship("HRRecord", uselist=False, back_populates="record")
 
-    # def __init__(self, rating, specialization, review):
-    #     self.rating = rating
-    #     self.specialization = specialization
-    #     self.review = review
-
 
 class UserRecord(Base):
     __tablename__ = "user_record"

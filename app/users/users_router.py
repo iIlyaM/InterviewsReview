@@ -23,7 +23,12 @@ async def create_user_registration(request: schemas.Applicant, database: Session
 
 
 @router.post('/superuser', status_code=status.HTTP_201_CREATED)
-async def create_superuser(request: schemas.SuperUser, database: Session = Depends(get_db)):
+async def create_superuser(
+        request: schemas.SuperUser,
+        database: Session = Depends(get_db),
+        curr_user: schemas.BaseUser = Depends(get_current_user)
+):
+    services.check_admin_access(curr_user.email, database)
     await services.check_email_name_unique(request.email, request.name, database)
     new_user = await services.new_user_register(request, database, request.role)
     return new_user

@@ -71,35 +71,35 @@ async def check_email_name_unique(email: str, name: str, database):
             detail="The user with this name already exists in the system.",
         )
 
-#
-# def __get_role_by_email(user_email: str, database):
-#     return database.query(UserAuth).filter(UserAuth.email == user_email).first().role
-#
-#
-# def check_user_access(user_email: str, database):
-#     role = __get_role_by_email(user_email, database)
-#     if role == Role.hr:
-#         raise HTTPException(
-#             status_code=403,
-#             detail="You must have the 'user' or 'admin' role to use this method.",
-#         )
-#
-#
-# def check_admin_access(user_email: str, database):
-#     role = __get_role_by_email(user_email, database)
-#
-#     if role != Role.admin:
-#         raise HTTPException(
-#             status_code=403,
-#             detail="You must have the 'admin' role to use this method.",
-#         )
-#
-#
-# def check_hr_access(user_email: str, database):
-#     role = __get_role_by_email(user_email, database)
-#     if role == Role.user:
-#         raise HTTPException(
-#             status_code=403,
-#             detail="You must have the 'hr' or 'admin' role to use this method.",
-#         )
+
+def __get_role_by_email(user_email: str, database):
+    return database.query(UserAuth).filter(UserAuth.email == user_email).first().role
+
+
+def check_user_access(user_email: str, database):
+    role = __get_role_by_email(user_email, database)
+    if role == Role.hr:
+        raise HTTPException(
+            status_code=403,
+            detail="You must have the 'user' or 'admin' role to use this method.",
+        )
+
+
+def check_admin_access(user_email: str, database):
+    role = __get_role_by_email(user_email, database)
+
+    if role != Role.admin:
+        raise HTTPException(
+            status_code=403,
+            detail="You must have the 'admin' role to use this method.",
+        )
+
+
+def check_hr_access(user_email: str, database):
+    role = __get_role_by_email(user_email, database)
+    if role == Role.user:
+        raise HTTPException(
+            status_code=403,
+            detail="You must have the 'hr' or 'admin' role to use this method.",
+        )
 

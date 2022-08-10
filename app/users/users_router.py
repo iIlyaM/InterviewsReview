@@ -38,8 +38,10 @@ async def create_superuser(
 async def create_user_by_super_user(
         role: Role,
         request: schemas.BaseUser,
-        database: Session = Depends(get_db)
+        database: Session = Depends(get_db),
+        curr_user: schemas.BaseUser = Depends(get_current_user)
 ):
+    services.check_admin_access(curr_user.email, database)
     await services.check_email_name_unique(request.email, request.name, database)
     new_user = await services.new_user_register(request, database, role)
     return new_user
@@ -48,19 +50,30 @@ async def create_user_by_super_user(
 #     dependencies=[Depends(get_current_user)]
 
 
-@router.get(
-    '/',
-    response_model=List[schemas.DisplayUser]
-)
-async def get_all_users(database: Session = Depends(get_db)):
+@router.get('/', response_model=List[schemas.DisplayUser])
+async def get_all_users(
+        database: Session = Depends(get_db),
+        curr_user: schemas.BaseUser = Depends(get_current_user)
+):
+    services.check_user_access(curr_user.email, database)
     return await services.get_users(database)
 
 
 @router.get('/{user_id}', response_model=schemas.DisplayUser)
-async def get_user_by_id(user_id: int, database: Session = Depends(get_db)):
+async def get_user_by_id(
+        user_id: int,
+        database: Session = Depends(get_db),
+        curr_user: schemas.BaseUser = Depends(get_current_user)
+):
+    services.check_admin_access(curr_user.email, database)
     return await services.get_user(user_id, database)
 
 
 @router.delete('/{user_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
-async def remove_user_by_id(user_id: int, database: Session = Depends(get_db)):
+async def remove_user_by_id(
+        user_id: int,
+        database: Session = Depends(get_db),
+        curr_user: schemas.BaseUser = Depends(get_current_user)
+):
+    services.check_admin_access(curr_user.email, database)
     return await services.delete_user_by_id(user_id, database)

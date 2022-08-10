@@ -7,6 +7,7 @@ from app.users.schemas import BaseUser
 from app.users.services import check_user_access, check_admin_access, check_hr_access
 from . import schemas
 from .services import *
+from .validator import check_user_record_access
 
 record_router = APIRouter(
     tags=['Users records']
@@ -57,7 +58,7 @@ async def update_record(
         database: Session = Depends(get_db),
         curr_user: BaseUser = Depends(get_current_user)
 ):
-    check_user_access(curr_user.email, database)
+    check_user_record_access(curr_user.email, username, database)
     return await update(username, title, record, database)
 
 

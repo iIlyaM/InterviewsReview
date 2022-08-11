@@ -1,15 +1,12 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, status, Response, HTTPException
+from fastapi import APIRouter, Depends, status, Response
 from sqlalchemy.orm import Session
 
 from app.core.utils import get_db
 from . import schemas
 from . import services
-from . import validator
 from .schemas import Role
-from app.auth.jwt import get_current_user
-
 router = APIRouter(
     tags=['Users']
 )
@@ -26,9 +23,7 @@ async def create_user_registration(request: schemas.Applicant, database: Session
 async def create_superuser(
         request: schemas.SuperUser,
         database: Session = Depends(get_db),
-        curr_user: schemas.BaseUser = Depends(get_current_user)
 ):
-    services.check_admin_access(curr_user.email, database)
     await services.check_email_name_unique(request.email, request.name, database)
     new_user = await services.new_user_register(request, database, request.role)
     return new_user
@@ -39,9 +34,7 @@ async def create_user_by_super_user(
         role: Role,
         request: schemas.BaseUser,
         database: Session = Depends(get_db),
-        curr_user: schemas.BaseUser = Depends(get_current_user)
 ):
-    services.check_admin_access(curr_user.email, database)
     await services.check_email_name_unique(request.email, request.name, database)
     new_user = await services.new_user_register(request, database, role)
     return new_user
@@ -53,9 +46,7 @@ async def create_user_by_super_user(
 @router.get('/', response_model=List[schemas.DisplayUser])
 async def get_all_users(
         database: Session = Depends(get_db),
-        curr_user: schemas.BaseUser = Depends(get_current_user)
 ):
-    services.check_user_access(curr_user.email, database)
     return await services.get_users(database)
 
 
@@ -63,9 +54,7 @@ async def get_all_users(
 async def get_user_by_id(
         user_id: int,
         database: Session = Depends(get_db),
-        curr_user: schemas.BaseUser = Depends(get_current_user)
 ):
-    services.check_admin_access(curr_user.email, database)
     return await services.get_user(user_id, database)
 
 
@@ -73,7 +62,5 @@ async def get_user_by_id(
 async def remove_user_by_id(
         user_id: int,
         database: Session = Depends(get_db),
-        curr_user: schemas.BaseUser = Depends(get_current_user)
 ):
-    services.check_admin_access(curr_user.email, database)
     return await services.delete_user_by_id(user_id, database)

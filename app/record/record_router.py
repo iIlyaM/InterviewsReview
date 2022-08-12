@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.core.utils import get_db
 from app.auth.jwt import get_current_user
 from app.users.schemas import CurrentUser
-from app.users.services import check_user_access, check_admin_access, check_hr_access
+from app.users.services import check_user_access, check_admin_access
 from . import schemas
 from .services import *
 from .validator import check_user_record_access
@@ -59,7 +59,7 @@ async def update_record(
         database: Session = Depends(get_db),
         curr_user: CurrentUser = Depends(get_current_user)
 ):
-    check_user_record_access(curr_user.role, username, database)
+    check_user_record_access(curr_user.email, curr_user.role, username, database)
     return await update(username, title, record, database)
 
 

@@ -1,4 +1,5 @@
 from pydantic import BaseModel, validator
+from app.users.schemas import Role
 
 
 class RatingValidatorModel(BaseModel):
@@ -32,5 +33,6 @@ class DisplayUserRecordModel(UserRecordModel):
     record_title: str
 
 
-class EmailRecordMode(RecordModel):
+class EmailRecordModel(RecordModel):
     email: str
+    role: Role

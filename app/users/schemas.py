@@ -34,3 +34,7 @@ class DisplayUser(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class CurrentUser(BaseUser):
+    role: Role

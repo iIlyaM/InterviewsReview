@@ -23,6 +23,6 @@ def login(request: Login, db: Session = Depends(get_db)):
     if not security.verify_password(request.password, user.password):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Invalid Password')
 
-    access_token = create_access_token(data={"sub": user.email})
+    access_token = create_access_token(data={"sub": user.email, "sub_r": user.role})
 
     return {"access_token": access_token, "token_type": "bearer"}

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.core.utils import get_db
 from app.auth.jwt import get_current_user
-from app.users.schemas import BaseUser
+from app.users.schemas import CurrentUser
 from app.users.services import check_user_access, check_admin_access, check_hr_access
 from . import schemas
 from .services import *
@@ -21,16 +21,17 @@ async def add_user_record(
         title: str,
         request: schemas.RecordModel,
         database: Session = Depends(get_db),
-        curr_user: EmailRecordMode = Depends(get_current_user)
+        curr_user: EmailRecordModel = Depends(get_current_user)
 ):
-    check_user_access(curr_user.email, database)
+    check_user_access(curr_user.role, database)
     await check_title(title, database)
     return await create_user_record(user_id, company_name, title, request, database)
 
 
 @record_router.get('/record/{title}', response_model=schemas.DisplayUserRecordModel)
 async def get_user_record_by_title(
-        title: str, database: Session = Depends(get_db),
+        title: str,
+        database: Session = Depends(get_db),
 ):
     return await get_record_by_title(title, database)
 
@@ -56,9 +57,9 @@ async def update_record(
         title: str,
         record: schemas.RecordModel,
         database: Session = Depends(get_db),
-        curr_user: BaseUser = Depends(get_current_user)
+        curr_user: CurrentUser = Depends(get_current_user)
 ):
-    check_user_record_access(curr_user.email, username, database)
+    check_user_record_access(curr_user.role, username, database)
     return await update(username, title, record, database)
 
 
@@ -69,7 +70,7 @@ async def update_record(
 async def delete_record(
         title: str,
         database: Session = Depends(get_db),
-        curr_user: BaseUser = Depends(get_current_user)
+        curr_user: CurrentUser = Depends(get_current_user)
 ):
-    check_admin_access(curr_user.email, database)
+    check_admin_access(curr_user.role, database)
     return await remove_record(title, database)

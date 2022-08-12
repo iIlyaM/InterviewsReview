@@ -76,8 +76,8 @@ def __get_role_by_email(user_email: str, database):
     return database.query(UserAuth).filter(UserAuth.email == user_email).first().role
 
 
-def __get_user_id_by_role(user_role: str, database):
-    return database.query(UserAuth).filter(UserAuth.role == user_role).first().id
+def __get_user_id_by_email(user_email: str, database):
+    return database.query(UserAuth).filter(UserAuth.email == user_email).first().id
 
 
 def check_user_access(user_role: str, database):

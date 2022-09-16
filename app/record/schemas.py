@@ -12,8 +12,11 @@ class RatingValidatorModel(BaseModel):
         return value
 
 
-# class Specialization(BaseModel):
-#     specialization: str
+class SpecializationModel(BaseModel):
+    specialization: str
+
+    class Config:
+        orm_mode = True
 
 
 class BriefRecordModel(RatingValidatorModel):

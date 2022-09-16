@@ -53,6 +53,11 @@ async def get_specializations(database):
     return database.query(Specialization).all()
 
 
+async def get_specializations_by_record_title(database, record_title):
+    record_id = database.query(UserRecord).filter(UserRecord.record_title == record_title).first().record_id
+    return database.query(Specialization).filter(Specialization.record_id == record_id).all()
+
+
 async def update(received_name: str, received_title: str, record: RecordModel, database):
     user_id = database.query(User).filter(User.user_name == received_name).first().user_id
     new_user_record = database \

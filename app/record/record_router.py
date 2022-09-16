@@ -51,6 +51,23 @@ async def get_all_records(
     return await get_records(database)
 
 
+@record_router.get('/specializations', response_model=List[schemas.SpecializationModel])
+async def get_all_specializations(
+        database: Session = Depends(get_db)
+):
+    return await get_specializations(database)
+
+
+@record_router.get('/specializations/{title}', response_model=List[schemas.SpecializationModel])
+async def get_all_specializations_by_record_title(
+        title: str,
+        database: Session = Depends(get_db),
+        curr_user: CurrentUser = Depends(get_current_user)
+):
+    check_user_access(curr_user.role, database)
+    return await get_specializations_by_record_title(database, title)
+
+
 @record_router.put('/item/{username}/{title}', response_model=schemas.UserRecordModel, status_code=status.HTTP_200_OK)
 async def update_record(
         username: str,

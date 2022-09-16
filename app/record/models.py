@@ -7,8 +7,7 @@ class Record(Base):
     __tablename__ = "record"
 
     record_id = Column(Integer, primary_key=True, index=True, unique=True)
-    rating = Column(Float)  # points(рейтинг)
-    specialization = Column(String(100))
+    rating = Column(Float)
     review = Column(Text)
     company_name = Column(String(200))
 
@@ -51,3 +50,5 @@ class Specialization(Base):
     id = Column(Integer, primary_key=True, index=True, unique=True)
     record_id = Column(Integer, ForeignKey('record.record_id', ondelete="CASCADE"))
     specialization = Column(String(100))
+
+    record = relationship("Record", back_populates="specialization_table")

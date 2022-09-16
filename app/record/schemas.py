@@ -12,17 +12,29 @@ class RatingValidatorModel(BaseModel):
         return value
 
 
-class RecordModel(RatingValidatorModel):
+# class Specialization(BaseModel):
+#     specialization: str
+
+
+class BriefRecordModel(RatingValidatorModel):
     rating: float
-    specialization: str
     review: str
 
     class Config:
         orm_mode = True
 
 
+class RecordModel(RatingValidatorModel):
+    rating: float
+    review: str
+    specialization: str
+
+    class Config:
+        orm_mode = True
+
+
 class UserRecordModel(BaseModel):
-    record: RecordModel
+    record: BriefRecordModel
 
     class Config:
         orm_mode = True

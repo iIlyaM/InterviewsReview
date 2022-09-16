@@ -18,12 +18,13 @@ async def create_user_record(
 ):
     record = Record(
         rating=request.rating,
-        specialization=request.specialization,
         review=request.review
     )
     record.company_name = received_company_name
     add_entity(database, record)
     rec_id = database.query(Record).order_by(Record.record_id.desc()).first().record_id
+
+    __add_specialization(request.specialization, rec_id, database)
 
     user_record = UserRecord(
         user_id=received_id,
@@ -48,6 +49,10 @@ async def get_records(database) -> List[UserRecord]:
     return users_records
 
 
+async def get_specializations(database):
+    return database.query(Specialization).all()
+
+
 async def update(received_name: str, received_title: str, record: RecordModel, database):
     user_id = database.query(User).filter(User.user_name == received_name).first().user_id
     new_user_record = database \
@@ -62,8 +67,10 @@ async def update(received_name: str, received_title: str, record: RecordModel, d
         .filter(Record.company_name == new_user_record.company_name) \
         .first()
 
+    __clear_specializations(updated_record.record_id, database)
+
     updated_record.rating = record.rating
-    updated_record.specialization = record.specialization
+    __add_specialization(record.specialization, updated_record.record_id, database)
     updated_record.review = record.review
 
     database.commit()
@@ -93,4 +100,19 @@ def __update_company_rating(company_name: str, database):
     database.query(Company) \
         .filter(Company.company_name == company_name) \
         .update({Company.rating: new_rating})
+    database.commit()
+
+
+def __add_specialization(specializations: str, record_id, database):
+    specializations_list = specializations.split()
+    for spec in specializations_list:
+        specialization = Specialization(
+            record_id=record_id,
+            specialization=spec
+        )
+        add_entity(database, specialization)
+
+
+def __clear_specializations(record_id, database):
+    database.query(Specialization).filter(Specialization.record_id == record_id).delete()
     database.commit()

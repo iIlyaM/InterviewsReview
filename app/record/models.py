@@ -16,6 +16,7 @@ class Record(Base):
                                cascade="all, delete-orphan",
                                passive_deletes=True, )
     hr_record = relationship("HRRecord", uselist=False, back_populates="record")
+    specialization_table = relationship("Specialization", uselist=False, back_populates="record")
 
 
 class UserRecord(Base):
@@ -42,3 +43,11 @@ class HRRecord(Base):
 
     hr_user = relationship("HRUser")
     record = relationship("Record", back_populates="hr_record")
+
+
+class Specialization(Base):
+    __tablename__ = "specialization"
+
+    id = Column(Integer, primary_key=True, index=True, unique=True)
+    record_id = Column(Integer, ForeignKey('record.record_id', ondelete="CASCADE"))
+    specialization = Column(String(100))

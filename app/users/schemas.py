@@ -38,3 +38,9 @@ class DisplayUser(BaseModel):
 
 class CurrentUser(BaseUser):
     role: Role
+
+
+class DisplayCurrentUser(BaseModel):
+    name: constr(min_length=2, max_length=50)
+    email: EmailStr
+

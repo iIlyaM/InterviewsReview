@@ -77,3 +77,8 @@ async def remove_user_by_id(
 ):
     services.check_admin_access(curr_user.role, database)
     return await services.delete_user_by_id(user_id, database)
+
+
+@router.get('/me', response_model=schemas.DisplayCurrentUser)
+async def get_current_user(curr_user: schemas.CurrentUser = Depends(get_current_user)):
+    return await curr_user

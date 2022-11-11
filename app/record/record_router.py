@@ -21,9 +21,9 @@ async def add_user_record(
         title: str,
         request: schemas.RecordModel,
         database: Session = Depends(get_db),
-        curr_user: EmailRecordModel = Depends(get_current_user)
+        # curr_user: EmailRecordModel = Depends(get_current_user)
 ):
-    check_user_access(curr_user.role, database)
+    check_user_access("applicant", database)
     await check_title(title, database)
     return await create_user_record(user_id, company_name, title, request, database)
 

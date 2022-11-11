@@ -23,7 +23,9 @@ export default function Login(props) {
     const onSubmitHandler = async (event) => {
         event.preventDefault()
         console.log(loginForm)
-        await axios.post("http://localhost:8001/reviews/login", loginForm).then((response) => {
+        await axios
+        .post("http://localhost:8001/reviews/login", loginForm)
+        .then((response) => {
             console.log(response)
             localStorage.setItem("auth_token", response.data.result.access_token)
             localStorage.setItem("auth_token_type", response.data.result.token_type)
@@ -53,7 +55,7 @@ export default function Login(props) {
             <form onSubmit={onSubmitHandler}>
                 <div className='space-y-4'>
                     <input
-                        type="username"
+                        type="email"
                         placeholder="Email"
                         className='block text-sm py-3 px-4 rounded-lg w-full border-outline-none focus:ring focus:outline-none focus:ring-yellow-400'
                         onChange={(event) => {

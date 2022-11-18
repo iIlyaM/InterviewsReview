@@ -5,16 +5,22 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
 import {ToastContainer} from "react-toastify";
-import "react-toastify/ReactToastify.min.css"
+import { UserContextProvider } from './context/UserContext';
+import "react-toastify/ReactToastify.min.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'semantic-ui-css/semantic.min.css';
+import './index.css';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+  <UserContextProvider>
     <BrowserRouter>
-    <ToastContainer />
+      {/* <ToastContainer /> */}
       <App />
     </BrowserRouter>
+  </UserContextProvider>
   </React.StrictMode>
 );
 

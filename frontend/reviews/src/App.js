@@ -1,18 +1,50 @@
 import './App.css';
 import React, {useEffect, useState} from 'react';
+import { NavLink, Routes, Route } from 'react-router-dom';
 import Forgot from './form/Forgot';
 import Login from './form/Login';
 import Register from './form/Register';
 import Home from './form/Home';
 import UserRecord from './form/components/Record/UserRecord';
+import { Container } from 'semantic-ui-react';
+import UserListPage from './pages/UserListPage';
+import UserListFormPage from './pages/UserListFormPage';
 
 
-function App() {
+
+const App = () => {
   return (
-    <UserRecord/>
+    <Container>
+      <div className="ui two item menu">
+        <NavLink className="item" activeClassName="active" exact to="/">
+          Users List
+        </NavLink>
+        <NavLink
+          className="item"
+          activeClassName="active"
+          exact
+          to="/users/new"
+        >
+          Add User
+        </NavLink>
+      </div>
+      <Routes >
+        <Route path='/' element={<UserListPage />}/>;
+      </Routes>
+      {/* <Routes path="/users/new" component={UserListFormPage} /> */}
+      {/* <Routes path="/users/edit/:_id" component={UserListFormPage} /> */}
+    </Container>
   );
-}
+};
 
+// function App() {
+//   return (
+//     <UserRecord/>
+//   );
+// }
+
+
+//Регистрация Авторизация
 // function App() {
 //   const[page, setPage] = useState("login");
 //   const[token, setToken] = useState();

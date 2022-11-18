@@ -21,8 +21,8 @@ const UserRecord = () => {
     const handlePostShow = () => { SetPostShow(true) }
     const hanldePostClose = () => { SetPostShow(false) }
 
-    const [company_name, setcompanyname] = useState("")
-    const [title, settitle ] = useState("")
+    const [record_title, setrecord_title ] = useState("")
+    const [record, setrecord] = useState([])
     const [rating, setrating] = useState("")
     const [specialization, setspecialization] = useState("")
     const [review, setreview] = useState("")
@@ -49,7 +49,7 @@ const UserRecord = () => {
             })
     }
  const handleSubmite = () => {
-        const url = 'http://localhost:8001/users/records/{user_id}/{company_name}/{title}/record'
+        const url = 'http://localhost:8001/users/records/${user_id}/${company_name}/${title}/record'
         //const Credentials = { name, email, number, nic, address }
         axios.post(url)
             .then(response => {
@@ -135,9 +135,8 @@ const UserRecord = () => {
                         </thead>
                         <tbody>
                             {Data.map((item) =>
-                                <tr key={item._id}>
-                                    <td>{item.company_name}</td>
-                                    <td>{item.title}</td>
+                                <tr key={item.user_id}>
+                                    <td>{item.rating}</td>
                                     <td>{item.specialization}</td>
                                     <td>{item.review}</td>
                                     <td style={{ minWidth: 190 }}>

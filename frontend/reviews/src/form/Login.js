@@ -27,10 +27,11 @@ export default function Login(props) {
         .post("http://localhost:8001/reviews/login", loginForm)
         .then((response) => {
             console.log(response)
-            localStorage.setItem("auth_token", response.data.result.access_token)
-            localStorage.setItem("auth_token_type", response.data.result.token_type)
+            console.log(response.data.access_token)
+            localStorage.setItem("auth_token", response.data.access_token)
+            localStorage.setItem("auth_token_type", response.data.token_type)
 
-            toast.success.data(response.data.detail);
+            // toast.success.data(response.data.detail);
 
             setTimeout(()=>{
                 window.location.reload()
@@ -76,7 +77,7 @@ export default function Login(props) {
                 <div className="text-center mt-6">
                     <button type="submit" className="py-3 w-64 text-xl text-white bg-yellow-400 rounded-2x1 hover:bg-yellow-300 active:bg-yellow-500 outline-none">Sign In</button>
                     <p className="mt-4 text-sm">
-                        You dont have an account?
+                        You dont have an account?{" "}
                         <Link
                             to="/?register"
                             onClick={() => {
@@ -85,6 +86,7 @@ export default function Login(props) {
                         >
                             <span className="underline cursor-pointer">Register</span>
                         </Link>
+                        {" "}
                         or {" "}
                         <Link to="/?forgot"
                             onClick={() => {

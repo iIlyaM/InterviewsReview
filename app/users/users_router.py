@@ -53,9 +53,9 @@ async def create_user_by_super_user(
 @router.get('/', response_model=List[schemas.DisplayUser])
 async def get_all_users(
         database: Session = Depends(get_db),
-        curr_user: schemas.CurrentUser = Depends(get_current_user)
+        # curr_user: schemas.CurrentUser = Depends(get_current_user)
 ):
-    services.check_user_access(curr_user.role, database)
+    # services.check_user_access(curr_user.role, database)
     return await services.get_users(database)
 
 

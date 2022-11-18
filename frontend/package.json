@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "classnames": "^2.3.2",
     "fomantic-ui": "^2.9.0",
+    "react-hook-form": "^7.39.4",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.3"
   }

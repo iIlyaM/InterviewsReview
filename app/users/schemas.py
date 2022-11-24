@@ -16,6 +16,10 @@ class BaseUser(BaseModel):
     password: str
 
 
+class CreateUser(BaseUser):
+    role: Role
+
+
 class Applicant(BaseUser):
     role: Role = Role.applicant
 

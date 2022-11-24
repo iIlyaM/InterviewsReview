@@ -1,38 +1,42 @@
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form, Grid, Button } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 import classnames from 'classnames';
-import { UserContext } from '../context/UserContext';
-import { Redirect } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
+import { Navigate } from 'react-router-dom';
+import { flashErrorMessage } from './ErrorMessage';
+import  axios  from  'axios';
 
 const UserListForm = () => {
-  const [state] = useContext(UserContext);
-  const { register, errors, handleSubmit } = useForm();
-  const [redirect, setRedirect] = useState(false);
+  const [state, dispatch] = useContext(UserContext);
+  const { register, formState: { errors }, handleSubmit } = useForm();
+  const [navigate, setNavigate] = useState(false);
 
 
   const createUser = async data => {
     try {
-      const response = await axios.post('http://localhost:8001/reviews/users/superuser/new_user/${role}', data);
+      const response = await axios.post(`http://localhost:8001/reviews/users/superuser/new_user`, data);
       dispatch({
         type: 'CREATE_USER',
         payload: response.data,
       });
-      setRedirect(true);
+      setNavigate(true);
     } catch (error) {
       flashErrorMessage(dispatch, error);
     }
   };
 
   const onSubmit = async data => {
+    console.log(data);
     await createUser(data);
   };
 
-  if (redirect) {
-    return <Redirect to="/" />;
+  if (navigate) {
+    return <Navigate to="/" />;
   }
 
+  console.log(errors);
   
   return (
     <Grid centered columns={2}>
@@ -43,39 +47,25 @@ const UserListForm = () => {
             <Form.Field className={classnames({ error: errors.name })}>
               <label htmlFor="name">
                 Name
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Name"
-                  ref={register({ required: true, minLength: 2 })}
-                />
+                <input 
+                type="text"
+                placeholder="Name"
+                 {...register('name',
+                  { required: true,
+                   minLength: 2})} />
               </label>
-              <span className="error">
-                {errors.name &&
-                  errors.name.first.type === 'required' &&
-                  'You need to provide First Name'}
-              </span>
-              <span className="error">
-                {errors.name &&
-                  errors.name.type === 'minLength' &&
-                  'Must be 2 or more characters'}
-              </span>
             </Form.Field>
           </Form.Group>
           <Form.Field className={classnames({ error: errors.email })}>
             <label htmlFor="email">
               Email
-              <input
-                id="email"
-                name="email"
-                type="text"
-                placeholder="Email"
-                ref={register({
-                  required: true,
-                  pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                })}
-              />
+              <input 
+              type="email" 
+              placeholder="Email"
+              {...register('email',
+               { required: true,
+                pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/}
+                 )} />
             </label>
             <span className="error">
               {errors.email &&
@@ -92,10 +82,11 @@ const UserListForm = () => {
             <label htmlFor="password">
               Password
               <input
-                id="password"
-                name="password"
-                type="password"
+                type="text"
                 placeholder="Password"
+                {...register('password',
+                  { required: true,
+                   minLength: 0})}
               />
             </label>
           </Form.Field>
@@ -103,10 +94,11 @@ const UserListForm = () => {
             <label htmlFor="password">
               Role
               <input
-                id="role"
-                name="role"
-                type="role"
+                type="text"
                 placeholder="role"
+                {...register('role',
+                  { required: true,
+                   minLength: 0})}
               />
             </label>
           </Form.Field>

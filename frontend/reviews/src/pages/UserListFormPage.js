@@ -1,5 +1,5 @@
 import React from 'react';
-import UserListForm from '../pages/UserListFormPage';
+import UserListForm from '../form/components/UserListForm';
 
 const UserListFormPage = () => {
   return (

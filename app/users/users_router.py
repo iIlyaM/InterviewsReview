@@ -7,7 +7,7 @@ from app.core.utils import get_db
 from . import schemas
 from . import services
 from . import validator
-from .schemas import Role
+from .schemas import CreateUser
 from app.auth.jwt import get_current_user
 
 router = APIRouter(
@@ -34,16 +34,15 @@ async def create_superuser(
     return new_user
 
 
-@router.post('/superuser/new_user/{role}', status_code=status.HTTP_201_CREATED)
+@router.post('/superuser/new_user', status_code=status.HTTP_201_CREATED)
 async def create_user_by_super_user(
-        role: Role,
-        request: schemas.BaseUser,
+        request: schemas.CreateUser,
         database: Session = Depends(get_db),
-        curr_user: schemas.CurrentUser = Depends(get_current_user)
+        # curr_user: schemas.CurrentUser = Depends(get_current_user)
 ):
-    services.check_admin_access(curr_user.role, database)
+    # services.check_admin_access(curr_user.role, database)
     await services.check_email_name_unique(request.email, request.name, database)
-    new_user = await services.new_user_register(request, database, role)
+    new_user = await services.new_user_register(request, database, request.role)
     return new_user
 
 # ,
@@ -73,9 +72,9 @@ async def get_user_by_id(
 async def remove_user_by_id(
         user_id: int,
         database: Session = Depends(get_db),
-        curr_user: schemas.CurrentUser = Depends(get_current_user)
+        # curr_user: schemas.CurrentUser = Depends(get_current_user)
 ):
-    services.check_admin_access(curr_user.role, database)
+    # services.check_admin_access(curr_user.role, database)
     return await services.delete_user_by_id(user_id, database)
 
 

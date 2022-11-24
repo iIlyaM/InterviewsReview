@@ -4,7 +4,7 @@ import './style/main.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
-import {ToastContainer} from "react-toastify";
+// import {ToastContainer} from "react-toastify";
 import { UserContextProvider } from './context/UserContext';
 import "react-toastify/ReactToastify.min.css";
 import 'bootstrap/dist/css/bootstrap.min.css';

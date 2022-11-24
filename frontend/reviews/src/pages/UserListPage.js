@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import UserList from '../form/components/UserList';
 import axios from 'axios';
 import { UserContext } from '../context/UserContext';
+import { FlashMessage, flashErrorMessage } from '../form/components/ErrorMessage';
+
 
 const UserListPage = (props) => {
     const [state, dispatch] = useContext(UserContext);
@@ -20,8 +22,9 @@ const UserListPage = (props) => {
     return (
       <div>
         <h1>List of Users</h1>
+        {state.message.content && <FlashMessage message={state.message} />}
         <UserList users={state.users} />
-      </div>
+    </div>
     );
   };
   

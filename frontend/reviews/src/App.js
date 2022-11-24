@@ -5,11 +5,10 @@ import Forgot from './form/Forgot';
 import Login from './form/Login';
 import Register from './form/Register';
 import Home from './form/Home';
-import UserRecord from './form/components/Record/UserRecord';
 import { Container } from 'semantic-ui-react';
 import UserListPage from './pages/UserListPage';
 import UserListFormPage from './pages/UserListFormPage';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 
 
@@ -31,7 +30,7 @@ const App = () => {
       </div>
       <Routes >
         <Route path='/' element={<UserListPage />}/>
-        {/* <Route path='/users/new' element={<UserListFormPage />}/> */}
+        <Route path='/users/new' element={<UserListFormPage />}/>
       </Routes>
       {/* <Routes >
         
@@ -41,12 +40,6 @@ const App = () => {
     </Container>
   );
 };
-
-// function App() {
-//   return (
-//     <UserRecord/>
-//   );
-// }
 
 
 //Регистрация Авторизация

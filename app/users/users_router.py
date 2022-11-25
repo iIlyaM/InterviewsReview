@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, status, Response, HTTPException
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from app.core.utils import get_db
@@ -62,9 +63,9 @@ async def get_all_users(
 async def get_user_by_id(
         user_id: int,
         database: Session = Depends(get_db),
-        curr_user: schemas.CurrentUser = Depends(get_current_user)
+        # curr_user: schemas.CurrentUser = Depends(get_current_user)
 ):
-    services.check_admin_access(curr_user.role, database)
+    # services.check_admin_access(curr_user.role, database)
     return await services.get_user(user_id, database)
 
 
@@ -76,6 +77,18 @@ async def remove_user_by_id(
 ):
     # services.check_admin_access(curr_user.role, database)
     return await services.delete_user_by_id(user_id, database)
+
+
+@router.put('/{user_id}', status_code=status.HTTP_201_CREATED, response_model=schemas.UserEmailUpdate)
+async def update_email(
+        user_id: int,
+        request: schemas.UserEmailUpdate,
+        database: Session = Depends(get_db)
+):
+    # check_user_record_access(curr_user.email, curr_user.role, username, database)
+    # updated_user:schemas.UserEmailUpdate = await services.update_user_mail(user_id, request.email, database)
+    # print(jsonable_encoder(updated_user))
+    return await services.update_user_mail(user_id, request.email, database)
 
 
 @router.get('/me', response_model=schemas.DisplayCurrentUser)

@@ -48,3 +48,9 @@ class DisplayCurrentUser(BaseModel):
     name: constr(min_length=2, max_length=50)
     email: EmailStr
 
+
+class UserEmailUpdate(BaseModel):
+    email: EmailStr
+
+    class Config:
+        orm_mode = True

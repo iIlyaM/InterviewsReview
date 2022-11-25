@@ -20,6 +20,7 @@ const App = () => {
           Users List
         </NavLink>
         <NavLink
+          reloadDocument
           className="item"
           activeClassName="active"
           exact
@@ -31,12 +32,13 @@ const App = () => {
       <Routes >
         <Route path='/' element={<UserListPage />}/>
         <Route path='/users/new' element={<UserListFormPage />}/>
+        <Route path="/users/edit/:_id" element={<UserListFormPage />}/>
       </Routes>
       {/* <Routes >
         
       </Routes> */}
       {/* <Routes path="/users/new" component={UserListFormPage} /> */}
-      {/* <Routes path="/users/edit/:_id" component={UserListFormPage} /> */}
+      
     </Container>
   );
 };

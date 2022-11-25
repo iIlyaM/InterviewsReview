@@ -1,5 +1,6 @@
 import React, { useReducer, createContext } from 'react';
 
+
 export const UserContext = createContext();
 
 const initialState = {
@@ -16,6 +17,12 @@ function reducer(state, action) {
         users: action.payload,
       };
     }
+    case 'FETCH_USER': {
+      return {
+        ...state,
+        user: action.payload,
+      };
+    }
     case 'CREATE_USER': {
       return {
         ...state,
@@ -25,6 +32,23 @@ function reducer(state, action) {
           title: 'Success',
           content: 'New User created!',
           },
+      };
+    }
+    case 'UPDATE_USER': {
+      console.log(action.payload);
+      const {user} = action.payload;
+      console.log('user', user);
+      state.users.map(item => { console.log('map', item)});
+      return {
+        ...state,
+        users: state.users.map(item =>
+          item._id === user.user_id ? user : item,
+        ),
+        message: {
+          type: 'success',
+          title: 'Update Successful',
+          content: `User has been updated!`,
+        },
       };
     }
     case 'DELETE_USER': {

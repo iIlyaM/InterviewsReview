@@ -42,6 +42,14 @@ async def delete_user_by_id(user_auth_id, database):
     database.commit()
 
 
+async def update_user_mail(user_id, new_email, database):
+    user_auth = database.query(UserAuth).get(user_id)
+    user_auth.email = new_email
+
+    database.commit()
+    return user_auth
+
+
 def __add_user(database, received_user):
     user = User(user_id=received_user.id, user_name=received_user.username)
     add_entity(database, user)

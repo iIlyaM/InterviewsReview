@@ -3,6 +3,7 @@ import { Card, Button, Icon } from 'semantic-ui-react';
 import { UserContext } from '../../context/UserContext';
 import  { flashErrorMessage }  from  './ErrorMessage';
 import  axios  from  'axios';
+import { Link } from 'react-router-dom';
 
 const  { useContext }  =  React;
 
@@ -38,7 +39,12 @@ const UserCard = ({ user }) => {
       </Card.Content>
       <Card.Content extra>
         <div className="ui two buttons">
-          <Button basic color="green">
+          <Button
+            basic
+            color="green"
+            as={Link}
+            to={`/users/edit/${user.user_id}`}
+          >
             Edit
           </Button>
           <Button basic color="red" onClick={() => deleteUser(user.user_id)}>

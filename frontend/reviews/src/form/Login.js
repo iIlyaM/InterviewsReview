@@ -30,7 +30,6 @@ export default function Login(props) {
             console.log(response.data.access_token)
             localStorage.setItem("auth_token", response.data.access_token)
             localStorage.setItem("auth_token_type", response.data.token_type)
-
             // toast.success.data(response.data.detail);
 
             setTimeout(()=>{

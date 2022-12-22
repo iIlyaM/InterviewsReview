@@ -19,7 +19,7 @@ const UserListFormPage = () => {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:8001/reviews/users/${_id}`,
+            `http://localhost:8001/reviews/usersauth/${_id}`,
           );
           dispatch({
             type: 'FETCH_USER',

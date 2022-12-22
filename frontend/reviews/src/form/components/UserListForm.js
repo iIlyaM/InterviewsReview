@@ -7,13 +7,14 @@ import { Navigate } from 'react-router-dom';
 import { flashErrorMessage } from './ErrorMessage';
 import  axios  from  'axios';
 
+
+//todo Переделать названия с user на data, вынести в конфиг файл url'ы
 const UserListForm = ( user ) => {
   const [state, dispatch] = useContext(UserContext);
   const { register, formState: { errors }, handleSubmit } = useForm({
     defaultValues: user,
   });
   const [navigate, setNavigate] = useState(false);
-
 
   const createUser = async data => {
     try {
@@ -30,7 +31,7 @@ const UserListForm = ( user ) => {
   const updateUser = async data => {
     try {
       const response = await axios.put(
-        `http://localhost:8001/reviews/users/${user.user.user_id}`,
+        `http://localhost:8001/reviews/users/${user.user.id}`,
         data,
       );
       console.log('resp', response.data);
@@ -46,7 +47,7 @@ const UserListForm = ( user ) => {
   };
 
   const onSubmit = async data => {
-    if (user.user.user_id) {
+    if (user.user.id) {
       console.log("update");
       await updateUser(data);
     } else {
@@ -60,8 +61,8 @@ const UserListForm = ( user ) => {
   if (navigate) {
     return <Navigate to="/" />;
   }
-  
-  if(!user.user.user_id) {
+
+  if(!user.user.id) {
     return (
       <Grid centered columns={2}>
         <Grid.Column>
@@ -115,16 +116,14 @@ const UserListForm = ( user ) => {
               </label>
             </Form.Field>
             <Form.Field className={classnames({ error: errors.role })}>
-              <label htmlFor="password">
-                Role
-                <input
-                  type="text"
-                  placeholder="role"
-                  {...register('role',
-                    { required: true,
-                     minLength: 0})}
-                />
-              </label>
+          <label htmlFor="role">
+            Role
+            <select name='role' {...register("role")}>
+              <option value="applicant">applicant</option>
+              <option value="hr" selected>hr</option>
+              <option value="admin">admin</option>
+            </select>
+          </label>
             </Form.Field>
             <Button primary type="submit">
               Save
@@ -143,9 +142,9 @@ const UserListForm = ( user ) => {
             <Form.Field className={classnames({ error: errors.email })}>
               <label htmlFor="email">
                 Email
-                <input 
-                type="email" 
-                placeholder="Email"
+                <input
+                type="text"
+                value={user.user.email}
                 {...register('email',
                  { required: true,
                   pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/}

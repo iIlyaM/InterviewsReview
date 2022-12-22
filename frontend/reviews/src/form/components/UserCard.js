@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Button, Icon } from 'semantic-ui-react';
 import { UserContext } from '../../context/UserContext';
-import  { flashErrorMessage }  from  './ErrorMessage';
+import  { flashErrorMessage } from '';
 import  axios  from  'axios';
 import { Link } from 'react-router-dom';
 

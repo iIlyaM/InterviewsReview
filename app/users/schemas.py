@@ -54,3 +54,12 @@ class UserEmailUpdate(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class DisplayUserAuth(BaseModel):
+    id: int
+    username: str
+    email: EmailStr
+
+    class Config:
+        orm_mode = True

@@ -1,47 +1,90 @@
 import './App.css';
-import React, {useEffect, useState} from 'react';
-import { NavLink, Routes, Route, Navigate } from 'react-router-dom';
-import Forgot from './form/Forgot';
-import Login from './form/Login';
-import Register from './form/Register';
-import Home from './form/Home';
-import { Container } from 'semantic-ui-react';
-import UserListPage from './pages/UserListPage';
-import UserListFormPage from './pages/UserListFormPage';
-// import { useNavigate } from 'react-router-dom';
+import React from "react";
+import 'bootstrap/dist/css/bootstrap.min.css'
+import AdminHeader from "./components/headers/AdminHeader";
+import HrHeader from "./components/headers/HrHeader";
+import UserHeader from "./components/headers/UserHeader";
+
+
+function App() {
+
+    let a = "a";
+
+    if (a === "admin") {
+        return (
+            <div>
+                {<AdminHeader/>}
+                {/*{<HrHeader/>}*/}
+                {/*{<UserHeader/>}*/}
+            </div>
+        )
+    }
+}
+
+export default App;
 
 
 
-const App = () => {
-  return (
-    <Container>
-      <div className="ui two item menu">
-        <NavLink className="item" activeClassName="active" exact to="/">
-          Users List
-        </NavLink>
-        <NavLink
-          reloadDocument
-          className="item"
-          activeClassName="active"
-          exact
-          to='/users/new'
-        >
-          Add User
-        </NavLink>
-      </div>
-      <Routes >
-        <Route path='/' element={<UserListPage />}/>
-        <Route path='/users/new' element={<UserListFormPage />}/>
-        <Route path="/users/edit/:_id" element={<UserListFormPage />}/>
-      </Routes>
-      {/* <Routes >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import './App.css';
+// import React, {useEffect, useState} from 'react';
+// import { NavLink, Routes, Route, Navigate } from 'react-router-dom';
+// import Forgot from './form/Forgot';
+// import Login from './form/Login';
+// import Register from './form/Register';
+// import Home from './form/Home';
+// import { Container } from 'semantic-ui-react';
+// import UserListPage from './pages/UserListPage';
+// import UserListFormPage from './pages/UserListFormPage';
+// // import { useNavigate } from 'react-router-dom';
+
+
+
+
+// const App = () => {
+//   return (
+//     <Container>
+//       <div className="ui two item menu">
+//         <NavLink className="item" activeClassName="active" exact to="/">
+//           Users List
+//         </NavLink>
+//         <NavLink
+//           reloadDocument
+//           className="item"
+//           activeClassName="active"
+//           exact
+//           to='/users/new'
+//         >
+//           Add User
+//         </NavLink>
+//       </div>
+//       <Routes >
+//         <Route path='/' element={<UserListPage />}/>
+//         <Route path='/users/new' element={<UserListFormPage />}/>
+//         <Route path="/users/edit/:_id" element={<UserListFormPage />}/>
+//       </Routes>
+//       {/* <Routes >
         
-      </Routes> */}
-      {/* <Routes path="/users/new" component={UserListFormPage} /> */}
+//       </Routes> */}
+//       {/* <Routes path="/users/new" component={UserListFormPage} /> */}
       
-    </Container>
-  );
-};
+//     </Container>
+//   );
+// };
 
 
 //Регистрация Авторизация
@@ -85,4 +128,4 @@ const App = () => {
 
 //   return <React.Fragment>{pages()}</React.Fragment>
 // }
-export default App;
+// export default App;

@@ -70,9 +70,9 @@ async def update(received_name: str, received_title: str, record: RecordModel, d
     __update_company_rating(updated_record.company_name, database)
 
 
-async def remove_record(received_title: str, database):
-    record = database.query(UserRecord).filter(UserRecord.record_title == received_title).first().record_id
-    database.query(Record).filter(Record.record_id == record).delete()
+async def remove_record(received_id: int, database):
+    # record = database.query(UserRecord).filter(UserRecord.record_title == received_title).first().record_id
+    database.query(Record).filter(Record.record_id == received_id).delete()
     database.commit()
 
 

@@ -64,13 +64,13 @@ async def update_record(
 
 
 @record_router.delete(
-    '/record/{title}',
+    '/record/{id}',
     status_code=status.HTTP_204_NO_CONTENT,
     response_class=Response)
 async def delete_record(
-        title: str,
+        id: int,
         database: Session = Depends(get_db),
-        curr_user: CurrentUser = Depends(get_current_user)
+        # curr_user: CurrentUser = Depends(get_current_user)
 ):
-    check_admin_access(curr_user.role, database)
-    return await remove_record(title, database)
+    # check_admin_access(curr_user.role, database)
+    return await remove_record(id, database)

@@ -61,7 +61,7 @@ const UserListForm = ( user ) => {
   if (navigate) {
     return <Navigate to="/" />;
   }
-
+  
   if(!user.user.id) {
     return (
       <Grid centered columns={2}>
@@ -116,14 +116,14 @@ const UserListForm = ( user ) => {
               </label>
             </Form.Field>
             <Form.Field className={classnames({ error: errors.role })}>
-          <label htmlFor="role">
-            Role
+              <label htmlFor="role">
+                Role
             <select name='role' {...register("role")}>
-              <option value="applicant">applicant</option>
-              <option value="hr" selected>hr</option>
-              <option value="admin">admin</option>
-            </select>
-          </label>
+                  <option value="applicant">applicant</option>
+                  <option value="hr" selected>hr</option>
+                  <option value="admin">admin</option>
+                </select>
+              </label>
             </Form.Field>
             <Button primary type="submit">
               Save
@@ -142,7 +142,7 @@ const UserListForm = ( user ) => {
             <Form.Field className={classnames({ error: errors.email })}>
               <label htmlFor="email">
                 Email
-                <input
+                <input 
                 type="text"
                 value={user.user.email}
                 {...register('email',

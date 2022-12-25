@@ -10,9 +10,6 @@ from app.core.utils import add_entity
 
 
 async def create_user_record(
-        received_id: int,
-        received_company_name: str,
-        received_title: str,
         request,
         database
 ):
@@ -21,45 +18,44 @@ async def create_user_record(
         specialization=request.specialization,
         review=request.review
     )
-    record.company_name = received_company_name
+    record.company_name = request.company_name
     add_entity(database, record)
     rec_id = database.query(Record).order_by(Record.record_id.desc()).first().record_id
 
     user_record = UserRecord(
-        user_id=received_id,
-        company_name=received_company_name,
+        user_id=request.user_id,
+        company_name=request.company_name,
         record_id=rec_id,
-        record_title=received_title,
+        record_title=request.record_title,
     )
     add_entity(database, user_record)
-    __update_company_rating(received_company_name, database)
+    __update_company_rating(request.company_name, database)
 
 
-async def get_record_by_title(title: str, database):
-    return database.query(UserRecord).filter(UserRecord.record_title == title).first()
+async def get_record_by_title(record_id: int, database):
+    return database.query(UserRecord).filter(UserRecord.record_id == record_id).first()
 
 
 async def get_records_by_com_name(company_name: str, database):
     return database.query(UserRecord).filter(UserRecord.company_name == company_name).all()
 
 
-async def get_records(database) -> List[UserRecord]:
-    users_records = database.query(UserRecord).all()
+async def get_records(database):
+    users_records = database.query(UserRecord).join(User).all()
     return users_records
 
 
-async def update(received_name: str, received_title: str, record: RecordModel, database):
-    user_id = database.query(User).filter(User.user_name == received_name).first().user_id
-    new_user_record = database \
-        .query(UserRecord) \
-        .filter(UserRecord.user_id == user_id) \
-        .filter(UserRecord.record_title == received_title) \
-        .first()
+async def update(received_id: int, record: RecordModel, database):
+    # user_id = database.query(User).filter(User.user_name == received_id).first().user_id
+    # new_user_record = database \
+    #     .query(UserRecord) \
+    #     .filter(UserRecord.user_id == user_id) \
+    #     .filter(UserRecord.record_title == received_title) \
+    #     .first()
 
     updated_record = database \
         .query(Record) \
-        .filter(Record.record_id == new_user_record.record_id) \
-        .filter(Record.company_name == new_user_record.company_name) \
+        .filter(Record.record_id == received_id) \
         .first()
 
     updated_record.rating = record.rating

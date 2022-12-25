@@ -14,26 +14,23 @@ record_router = APIRouter(
 )
 
 
-@record_router.post('/{user_id}/{company_name}/{title}/record', status_code=status.HTTP_201_CREATED)
+@record_router.post('/new_record', status_code=status.HTTP_201_CREATED)
 async def add_user_record(
-        user_id: int,
-        company_name: str,
-        title: str,
-        request: schemas.RecordModel,
+        request: schemas.AddUserRecordModel,
         database: Session = Depends(get_db),
-        # curr_user: EmailRecordModel = Depends(get_current_user)
+        curr_user: UserDataModel = Depends(get_current_user)
 ):
-    check_user_access("applicant", database)
-    await check_title(title, database)
-    return await create_user_record(user_id, company_name, title, request, database)
+    # check_user_access("applicant", database)
+    # await check_title(title, database)
+    return await create_user_record(request, database)
 
 
-@record_router.get('/record/{title}', response_model=schemas.DisplayUserRecordModel)
-async def get_user_record_by_title(
-        title: str,
+@record_router.get('/record/{record_id}', response_model=schemas.DisplayUserRecordModel)
+async def get_user_record_by_id(
+        record_id: int,
         database: Session = Depends(get_db),
 ):
-    return await get_record_by_title(title, database)
+    return await get_record_by_title(record_id, database)
 
 
 @record_router.get('/record/{company}/records', response_model=List[schemas.DisplayUserRecordModel])
@@ -51,16 +48,15 @@ async def get_all_records(
     return await get_records(database)
 
 
-@record_router.put('/item/{username}/{title}', response_model=schemas.UserRecordModel, status_code=status.HTTP_200_OK)
+@record_router.put('/updated_record/{record_id}', response_model=schemas.UserRecordModel, status_code=status.HTTP_200_OK)
 async def update_record(
-        username: str,
-        title: str,
+        record_id: int,
         record: schemas.RecordModel,
         database: Session = Depends(get_db),
-        curr_user: CurrentUser = Depends(get_current_user)
+        # curr_user: CurrentUser = Depends(get_current_user)
 ):
-    check_user_record_access(curr_user.email, curr_user.role, username, database)
-    return await update(username, title, record, database)
+    # check_user_record_access(curr_user.email, curr_user.role, username, database)
+    return await update(record_id, record, database)
 
 
 @record_router.delete(

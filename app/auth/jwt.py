@@ -6,6 +6,9 @@ from jose import JWTError, jwt
 
 from app.users.schemas import Role
 from .schemas import TokenData
+from app.core.database import get_database
+from sqlalchemy.orm import Session
+from app.users.models import UserAuth
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
@@ -20,7 +23,7 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 
-def verify_token(token: str, credentials_exception):
+def verify_token(token: str, credentials_exception, database=next(get_database())):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
@@ -29,9 +32,13 @@ def verify_token(token: str, credentials_exception):
         if email is None:
             raise credentials_exception
         token_data = TokenData(email=email, role=role, id=id)
-        return token_data
+        # return token_data
     except JWTError:
         raise credentials_exception
+    user = database.query(UserAuth).get(id)
+    if user is None:
+        raise credentials_exception
+    return user
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")

@@ -1,131 +1,72 @@
 import './App.css';
-import React from "react";
+import React , {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import AdminHeader from "./components/headers/AdminHeader";
 import HrHeader from "./components/headers/HrHeader";
 import UserHeader from "./components/headers/UserHeader";
+import Login from './form/Login';
+import Register from './form/Register';
+import Home from './components/headers/Home';
+import { Container } from 'semantic-ui-react';
+import { NavLink, Router, Route, Navigate } from 'react-router-dom';
+
+
+// function App() {
+
+//     let a = "admin";
+
+//     if (a === "admin") {
+//         return (
+//             <div>
+//                 {<AdminHeader/>}
+//                 {/*{<HrHeader/>}*/}
+//                 {/*{<UserHeader/>}*/}
+//             </div>
+//         )
+//     }
+// }
+
+// export default App;
 
 
 function App() {
+  const[page, setPage] = useState("login");
+  const[token, setToken] = useState();
 
-    let a = "a";
+  useEffect(()=>{
+    const auth = localStorage.getItem("auth_token")
+    setToken(auth) 
+  }, [token])
 
-    if (a === "admin") {
-        return (
+  const choosePage = () => {
+    if(page === "login") {
+      return <Login setPage={setPage}/>
+    }
+    if(page === "register") {
+      return <Register setPage={setPage}/>
+    }
+  }
+
+  const pages = () => {
+    if(token==null) {
+      return (
+      <div className="min-h-screen bg-yellow-400 flex justify-center items-center">
+        <div className="py-12 px-12 bg-white rounded-2xl shadow-xl z-20">
+          {choosePage()}
+        </div>
+      </div>
+      );
+    }else{
+      return (
             <div>
                 {<AdminHeader/>}
                 {/*{<HrHeader/>}*/}
                 {/*{<UserHeader/>}*/}
             </div>
-        )
+      );
     }
+  };
+
+  return <React.Fragment>{pages()}</React.Fragment>
 }
-
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import './App.css';
-// import React, {useEffect, useState} from 'react';
-// import { NavLink, Routes, Route, Navigate } from 'react-router-dom';
-// import Forgot from './form/Forgot';
-// import Login from './form/Login';
-// import Register from './form/Register';
-// import Home from './form/Home';
-// import { Container } from 'semantic-ui-react';
-// import UserListPage from './pages/UserListPage';
-// import UserListFormPage from './pages/UserListFormPage';
-// // import { useNavigate } from 'react-router-dom';
-
-
-
-
-// const App = () => {
-//   return (
-//     <Container>
-//       <div className="ui two item menu">
-//         <NavLink className="item" activeClassName="active" exact to="/">
-//           Users List
-//         </NavLink>
-//         <NavLink
-//           reloadDocument
-//           className="item"
-//           activeClassName="active"
-//           exact
-//           to='/users/new'
-//         >
-//           Add User
-//         </NavLink>
-//       </div>
-//       <Routes >
-//         <Route path='/' element={<UserListPage />}/>
-//         <Route path='/users/new' element={<UserListFormPage />}/>
-//         <Route path="/users/edit/:_id" element={<UserListFormPage />}/>
-//       </Routes>
-//       {/* <Routes >
-        
-//       </Routes> */}
-//       {/* <Routes path="/users/new" component={UserListFormPage} /> */}
-      
-//     </Container>
-//   );
-// };
-
-
-//Регистрация Авторизация
-// function App() {
-//   const[page, setPage] = useState("login");
-//   const[token, setToken] = useState();
-
-//   useEffect(()=>{
-//     const auth = localStorage.getItem("auth_token")
-//     setToken(auth) 
-//   }, [token])
-
-//   const choosePage = () => {
-//     if(page === "login") {
-//       return <Login setPage={setPage}/>
-//     }
-//     if(page === "forgot") {
-//       return <Forgot setPage={setPage}/>
-//     }
-//     if(page === "register") {
-//       return <Register setPage={setPage}/>
-//     }
-//     if(page === "records") {
-//       return <Register setPage={setPage}/>
-//     }
-//   }
-
-//   const pages = () => {
-//     if(token==null) {
-//       return (
-//       <div className="min-h-screen bg-yellow-400 flex justify-center items-center">
-//         <div className="py-12 px-12 bg-white rounded-2xl shadow-xl z-20">
-//           {choosePage()}
-//         </div>
-//       </div>
-//       );
-//     }else{
-//       return <Home/>
-//     }
-//   };
-
-//   return <React.Fragment>{pages()}</React.Fragment>
-// }
-// export default App;

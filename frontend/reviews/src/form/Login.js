@@ -74,7 +74,7 @@ export default function Login(props) {
                     </input>
                 </div>
                 <div className="text-center mt-6">
-                    <button type="submit" className="py-3 w-64 text-xl text-white bg-yellow-400 rounded-2x1 hover:bg-yellow-300 active:bg-yellow-500 outline-none">Sign In</button>
+                    <button type="submit" className="py-3 w-64 text-xl text-white bg-yellow-400 rounded-2x1 hover:bg-yellow-300 active:bg-yellow-500 outline-none">Sign Up</button>
                     <p className="mt-4 text-sm">
                         You dont have an account?{" "}
                         <Link

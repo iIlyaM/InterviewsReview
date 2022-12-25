@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import UserListForm from '../form/components/UserListForm';
-import { flashErrorMessage } from '../form/components/ErrorMessage';
+import UserListForm from '../components/user/UserListForm';
+import { flashErrorMessage } from '../components/user/ErrorMessage';
 import { UserContext } from '../context/UserContext';
 import { useParams } from "react-router-dom";
 

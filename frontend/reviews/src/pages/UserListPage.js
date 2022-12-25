@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import UserList from '../form/components/UserList';
+import UserList from '../components/user/UserList';
 import axios from 'axios';
 import { UserContext } from '../context/UserContext';
-import { FlashMessage, flashErrorMessage } from '../form/components/ErrorMessage';
+import { FlashMessage, flashErrorMessage } from '../components/user/ErrorMessage';
 
 
 const UserListPage = (props) => {

@@ -14,6 +14,8 @@ import HrRecord from "../hr-record/HrRecord";
 import HrEmailAdd from "../hr-email/HrEmailAdd";
 import HrUserAdd from "../hr-user/HrUserAdd";
 import HrRecordAdd from "../hr-record/HrRecordAdd";
+import User from '../user/User';
+import UserAdd from '../user/UserAdd';
 import UserRecord from "../user-record/UserRecord";
 import UserRecordAdd from "../user-record/UserRecordAdd";
 
@@ -73,8 +75,8 @@ class AdminHeader extends Component {
                         <Route path="/user/hr/new" element={<HrUserAdd/>}/>
                         <Route path="/hr/records" element={<HrRecord/>}/>
                         <Route path="/hr/records/new" element={<HrRecordAdd/>}/>
-                        {/* <Route path="/users" element={<User/>}/> */}
-                        {/* <Route path="/user/new" element={<UserAdd/>}/> */}
+                        <Route path="/users" element={<User/>}/>
+                        <Route path="/user/new" element={<UserAdd/>}/>
                         <Route path="/user/records" element={<UserRecord/>}/>
                         <Route path="/user/records/:id" element={<UserRecordAdd/>}/>
                     </Routes>

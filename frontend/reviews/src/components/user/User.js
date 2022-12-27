@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Button, NavbarBrand} from "reactstrap";
-import {Link} from "react-router-dom";
+import {Button, ButtonGroup, Container, Table} from "react-bootstrap";
+import {Link} from "react-router-dom"
+import {Navbar, NavbarBrand} from "reactstrap";
+import Url from "../utils/Url";
 
 export default class HrUser extends Component {
     constructor(props) {
@@ -36,6 +38,7 @@ export default class HrUser extends Component {
 
         const recList = records.map(rec => {
             return <tr key={rec.id}>
+                <td>{rec.id}</td>
                 <td>{rec.username}</td>
                 <td>{rec.email}</td>
                 <td>
@@ -51,15 +54,15 @@ export default class HrUser extends Component {
             <div>
                 <Navbar color="dark" dark expand="md">
                     <Button className="d-flex ms-auto"><NavbarBrand tag={Link}
-                                                                    to="/user/hr/new">Add</NavbarBrand></Button>
+                                                                    to="/user/new">Add</NavbarBrand></Button>
                 </Navbar>
                 <Container className='fluid'>
                     <Table className="mt-5">
                         <thead>
                         <tr>
                             <th width="30%">id</th>
-                            <th width="30%">email</th>
-                            <th width="40%">Username</th>
+                            <th width="30%">Username</th>
+                            <th width="40%">Email</th>
                         </tr>
                         </thead>
                         <tbody>

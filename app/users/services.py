@@ -40,6 +40,8 @@ async def get_user(user_id, database) -> User:
 async def get_user_auth(user_id, database):
     return database.query(UserAuth).get(user_id)
 
+async def get_users_auth(database):
+    return database.query(UserAuth).all()
 
 async def delete_user_by_id(user_auth_id, database):
     database.query(UserAuth).filter(UserAuth.id == user_auth_id).delete()

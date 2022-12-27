@@ -79,6 +79,15 @@ async def get_user_auth_by_id(
     return await services.get_user_auth(user_id, database)
 
 
+@router.get('/auth/users', response_model=List[schemas.DisplayUserAuth])
+async def get_users_auth(
+        database: Session = Depends(get_db),
+        # curr_user: schemas.CurrentUser = Depends(get_current_user)
+):
+    # services.check_admin_access(curr_user.role, database)
+    return await services.get_users_auth(database)
+
+
 @router.delete('/{user_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
 async def remove_user_by_id(
         user_id: int,

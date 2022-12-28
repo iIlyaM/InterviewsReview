@@ -5,15 +5,11 @@ import {NavbarBrand} from "reactstrap";
 import Url from "../utils/Url";
 import withNavigateHook from "../utils/withNavigateHook";
 
-export class UserAdd extends Component {
+export class UserUpdate extends Component {
 
 
     emptyItem = {
-        name: '',
         email: '',
-        password: '',
-        role: 'applicant',
-        id: 0,
       };
 
     constructor(props) {
@@ -50,8 +46,8 @@ export class UserAdd extends Component {
         event.preventDefault();
         const {item} = this.state;
         const url = this.url.getUrl();
-        await fetch(url + '/reviews/users/superuser/new_user', {
-            method: 'POST',
+        await fetch(url + '/reviews/users/' + this.props.params.id, {
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -61,20 +57,20 @@ export class UserAdd extends Component {
         window.location.reload()
     }
 
-    // async componentDidMount() {
-    //     console.log(this.props.params.id);
-    //     if (this.props.params.id !== 'new') {
-    //         const url = this.url.getUrl();
-    //         const client = await (await fetch(url + "/reviews/usersauth/" + this.props.params.id)).json();
-    //         this.setState({item: client});
-    //         console.log(this.state.item)
-    //     }
-    // }
+    async componentDidMount() {
+        console.log(this.props.params.id);
+        if (this.props.params.id !== 'new') {
+            const url = this.url.getUrl();
+            const client = await (await fetch(url + "/reviews/users/email/" + this.props.params.id)).json();
+            this.setState({item: client});
+            console.log(this.state.item)
+        }
+    }
 
 
     render() {
         const {item} = this.state;
-        const title = <h2>{item.id ? 'Edit User' : 'Add User'}</h2>;
+        const title = <h2>{'Edit User'}</h2>;
 
         return (
             <div>
@@ -82,29 +78,9 @@ export class UserAdd extends Component {
                     {title}
                     <Form>
                         <FormGroup>
-                            <label>Name</label>
-                            <input type="text" name="name" id="name" value={item.name || ''}
-                                   onChange={this.handleChange} autoComplete="name"/>
-                        </FormGroup>
-                        <FormGroup>
                             <label>Email</label>
                             <input type="text" name="email" id="email" value={item.email || ''}
                                    onChange={this.handleChange} autoComplete="email"/>
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Password</label>
-                            <input type="text" name="password" id="password" value={item.password || ''}
-                                   onChange={this.handleChange} autoComplete="password"/>
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Role</label>
-                            {/* <input type="text" name="role" id="role" value={item.role || ''}
-                                   onChange={this.handleChange} autoComplete="role"/> */}
-                                <select value={item.role} onChange={this.handleChange} name="role" autoComplete="role">
-                                    <option value="applicant">Applicant</option>
-                                    <option value="hr">HR</option>
-                                    <option value="admin">Admin</option>
-                                </select>
                         </FormGroup>
                         <FormGroup>
                             <Button variant="primary" type="submit" onClick={this.handleSubmit}>Save</Button>
@@ -115,4 +91,4 @@ export class UserAdd extends Component {
             </div>);
     }
 }
-export default withNavigateHook(UserAdd)
+export default withNavigateHook(UserUpdate)

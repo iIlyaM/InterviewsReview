@@ -37,6 +37,10 @@ async def get_user(user_id, database) -> User:
     return database.query(User).get(user_id)
 
 
+async def get_user_email(user_id, database):
+    return database.query(UserAuth).get(user_id)
+
+
 async def get_user_auth(user_id, database):
     return database.query(UserAuth).get(user_id)
 

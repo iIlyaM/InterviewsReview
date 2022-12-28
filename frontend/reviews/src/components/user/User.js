@@ -5,7 +5,7 @@ import {Navbar, NavbarBrand} from "reactstrap";
 import Url from "../utils/Url";
 import Paginate from '../utils/Paginate';
 
-export default class HrUser extends Component {
+export default class User extends Component {
     constructor(props) {
         super(props);
         this.url = new Url();
@@ -87,7 +87,7 @@ export default class HrUser extends Component {
                 <td>
                     <ButtonGroup>
                         <Button><NavbarBrand tag={Link} to={"/users/" + rec.id}>Edit</NavbarBrand></Button>
-                        <Button size="sm" color='danger' onClick={() => this.remove(rec.id)}>Delete</Button>
+                        <Button size="sm" color="danger" onClick={() => this.remove(rec.id)}>Delete</Button>
                     </ButtonGroup>
                 </td>
             </tr>

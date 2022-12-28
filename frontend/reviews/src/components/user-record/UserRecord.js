@@ -58,7 +58,7 @@ export default class UserRecord extends Component {
             <div>
                 <Navbar color="dark" dark expand="md">
                     <Button className="d-flex ms-auto"><NavbarBrand tag={Link}
-                                                                    to="/user/record/new">Add</NavbarBrand></Button>
+                                                                    to="/user/records/new">Add</NavbarBrand></Button>
                 </Navbar>
                 <Container className='fluid'>
                     <Table className="mt-5">

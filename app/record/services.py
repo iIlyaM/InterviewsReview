@@ -32,8 +32,12 @@ async def create_user_record(
     __update_company_rating(request.company_name, database)
 
 
-async def get_record_by_title(record_id: int, database):
+async def get_record_by_id(record_id: int, database):
     return database.query(UserRecord).filter(UserRecord.record_id == record_id).first()
+
+
+async def get_record(record_id: int, database):
+    return database.query(Record).filter(Record.record_id == record_id).first()
 
 
 async def get_records_by_com_name(company_name: str, database):

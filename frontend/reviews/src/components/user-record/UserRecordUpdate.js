@@ -6,20 +6,11 @@ import Url from "../utils/Url";
 import jwt_decode from "jwt-decode";
 import withNavigateHook from "../utils/withNavigateHook";
 
-export class UserRecordAdd extends Component {
+export class UserRecordUpdate extends Component {
     emptyItem = {
-        record: {
-            rating: '',
-            specialization: "",
-            review: ""
-          },
-          company_name: "",
-          record_title: "",
-          record_id: '',
-          user: {
-            user_id: '',
-            user_name: ""
-          }
+        rating: '',
+        specialization: "",
+        review: ""
       };
 
     constructor(props) {
@@ -37,21 +28,6 @@ export class UserRecordAdd extends Component {
         const value = target.value;
         const name = target.name;
         let item = {...this.state.item};
-        if (name === "company_name") {
-            item["record"].company_name = value;
-        }
-        if (name === "record_title") {
-            item["record"].record_title = value;
-        }
-        if (name === "rating") {
-            item["record"].rating = value;
-        }
-        if (name === "specialization") {
-            item["record"].specialization = value;
-        }
-        if (name === "review") {
-            item["record"].review = value;
-        }
         item[name] = value;
         this.setState({item});
     }
@@ -60,7 +36,7 @@ export class UserRecordAdd extends Component {
         console.log(this.props.params.id);
         if (this.props.params.id !== 'new') {
             const url = this.url.getUrl();
-            const client = await (await fetch(url + "/users/records/record/" + this.props.params.id)).json();
+            const client = await (await fetch(url + "/users/records/record/record_data/" + this.props.params.id)).json();
             this.setState({item: client});
             console.log(this.state.item)
         }
@@ -73,8 +49,8 @@ export class UserRecordAdd extends Component {
         const {item} = this.state;
         item.user_id = data.sub_id;
         const url = this.url.getUrl();
-        await fetch(url + '/users/records/new_record', {
-            method: 'POST',
+        await fetch(url + '/users/records/updated_record/' + this.props.params.id, {
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -87,7 +63,7 @@ export class UserRecordAdd extends Component {
 
     render() {
         const {item} = this.state;
-        const title = <h2>{this.props.params.id ? 'Edit Record' : 'Add Record'}</h2>;
+        const title = <h2>{'Edit Record'}</h2>;
 
         return (
             <div>
@@ -96,28 +72,18 @@ export class UserRecordAdd extends Component {
                     <Form onSubmit={this.handleSubmit}>
                         <FormGroup>
                             <label>Rating</label>
-                            <input type="text" name="rating" id="rating" value={item.record.rating || ''}
+                            <input type="text" name="rating" id="rating" value={item.rating || ''}
                                    onChange={this.handleChange} autoComplete="rating"/>
                         </FormGroup>
                         <FormGroup>
                             <label>Specialization</label>
-                            <input type="text" name="specialization" id="specialization" value={item.record.specialization || ''}
+                            <input type="text" name="specialization" id="specialization" value={item.specialization || ''}
                                    onChange={this.handleChange} autoComplete="specialization"/>
                         </FormGroup>
                         <FormGroup>
                             <label>Review</label>
-                            <input type="text" name="review" id="review" value={item.record.review || ''}
+                            <input type="text" name="review" id="review" value={item.review || ''}
                                    onChange={this.handleChange} autoComplete="review"/>
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Company name</label>
-                            <input type="text" name="company_name" id="company_name" value={item.company_name || ''}
-                                   onChange={this.handleChange} autoComplete="company_name"/>
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Title</label>
-                            <input type="text" name="record_title" id="record_title" value={item.record_title || ''}
-                                   onChange={this.handleChange} autoComplete="record_title"/>
                         </FormGroup>
                         <FormGroup>
                             <Button variant="primary" type="submit">Save</Button>
@@ -128,4 +94,4 @@ export class UserRecordAdd extends Component {
             </div>);
     }
 }
-export default withNavigateHook(UserRecordAdd)
+export default withNavigateHook(UserRecordUpdate)

@@ -18,6 +18,7 @@ import User from '../user/User';
 import UserAdd from '../user/UserAdd';
 import UserRecord from "../user-record/UserRecord";
 import UserRecordAdd from "../user-record/UserRecordAdd";
+import UserRecordUpdate from '../user-record/UserRecordUpdate';
 
 class AdminHeader extends Component {
     render() {
@@ -76,9 +77,10 @@ class AdminHeader extends Component {
                         <Route path="/hr/records" element={<HrRecord/>}/>
                         <Route path="/hr/records/new" element={<HrRecordAdd/>}/>
                         <Route path="/users" element={<User/>}/>
-                        <Route path="/user/new" element={<UserAdd/>}/>
+                        <Route path="/users/:id" element={<UserAdd/>}/>
                         <Route path="/user/records" element={<UserRecord/>}/>
-                        <Route path="/user/records/:id" element={<UserRecordAdd/>}/>
+                        <Route path="/user/records/new" element={<UserRecordAdd/>}/>
+                        <Route path="/user/records/:id" element={<UserRecordUpdate/>}/>
                     </Routes>
                 </div>
                 {/* </Router> */}

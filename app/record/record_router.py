@@ -30,7 +30,15 @@ async def get_user_record_by_id(
         record_id: int,
         database: Session = Depends(get_db),
 ):
-    return await get_record_by_title(record_id, database)
+    return await get_record_by_id(record_id, database)
+
+
+@record_router.get('/record/record_data/{record_id}', response_model=schemas.RecordModel)
+async def get_user_record(
+        record_id: int,
+        database: Session = Depends(get_db),
+):
+    return await get_record(record_id, database)
 
 
 @record_router.get('/record/{company}/records', response_model=List[schemas.DisplayUserRecordModel])

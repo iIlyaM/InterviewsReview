@@ -3,8 +3,9 @@ import {Link} from 'react-router-dom';
 import {Button, Container, Form, FormGroup} from "react-bootstrap";
 import {NavbarBrand} from "reactstrap";
 import Url from "../utils/Url";
+import withNavigateHook from "../utils/withNavigateHook";
 
-export default class UserAdd extends Component {
+export class UserAdd extends Component {
 
 
     emptyItem = {
@@ -59,6 +60,17 @@ export default class UserAdd extends Component {
         window.location.reload()
     }
 
+    async componentDidMount() {
+        console.log(this.props.params.id);
+        if (this.props.params.id !== 'new') {
+            const url = this.url.getUrl();
+            const client = await (await fetch(url + "/reviews/usersauth/" + this.props.params.id)).json();
+            this.setState({item: client});
+            console.log(this.state.item)
+        }
+    }
+
+
     render() {
         const {item} = this.state;
         const title = <h2>{item.id ? 'Edit User' : 'Add User'}</h2>;
@@ -102,3 +114,4 @@ export default class UserAdd extends Component {
             </div>);
     }
 }
+export default withNavigateHook(UserAdd)

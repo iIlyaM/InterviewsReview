@@ -40,6 +40,11 @@ export default class User extends Component {
         window.location.reload()
     }
 
+    inputHandler = (e) => {
+        let lowerCase = e.target.value.toLowerCase();
+        this.setState({inputText: lowerCase});
+    };
+
     paginate = (pageNumber) => {
         this.setState({currPage: pageNumber});
     };
@@ -78,6 +83,10 @@ export default class User extends Component {
             this.currentRec().filter((rec) => {
                 if (this.state.inputText === "") {
                     return rec;
+                } else {
+                    return rec.email
+                        .toLowerCase()
+                        .includes(this.state.inputText.toLowerCase());
                 }
             }).map(rec => {
             return <tr key={rec.id}>
@@ -99,7 +108,17 @@ export default class User extends Component {
                     <Button className="d-flex ms-auto"><NavbarBrand tag={Link}
                                                                     to="/users/new">Add</NavbarBrand></Button>
                 </Navbar>
-                <Container className='fluid'>
+                <Container className='fluid mt-5'>
+                    <div className="input-group">
+                        <span className="input-group-text">Поиск почт</span>
+                        <input
+                            className="form-control"
+                            type="text"
+                            id="outline-basic"
+                            onChange={this.inputHandler}
+                            value={this.state.inputText}
+                        />
+                    </div>
                     <Table className="mt-5">
                         <thead>
                         <tr>

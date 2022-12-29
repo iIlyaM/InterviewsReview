@@ -88,7 +88,8 @@ export class UserAdd extends Component {
                         </FormGroup>
                         <FormGroup>
                             <label>Email</label>
-                            <input type="text" name="email" id="email" value={item.email || ''}
+                            <input type="text" name="email" id="email" required
+          placeholder="username@beststartupever.com" pattern=".+@beststartupever.com" value={item.email || ''} 
                                    onChange={this.handleChange} autoComplete="email"/>
                         </FormGroup>
                         <FormGroup>
